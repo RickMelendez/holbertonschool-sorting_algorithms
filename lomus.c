@@ -18,30 +18,33 @@ void swap(int *a, int *b)
  * @high: ending
  * Return: index
  */
-int lomuto_partition(int *array, int low, int high)
+int lomuto_partition(int *array, int low, int high, size_t size)
 {
 	int p = array[high];
-	int i = low - 1;
-	int c;
+	int i = low;
+	int c, t;
 
-	for (c = low; c <= high - 1; c++)
+	for (c = low; c < high; c++)
 	{
 		if (array[c] < p)
 		{
-			i++;
-			if (i != c)
-			{
-				swap(&array[i], &array[c]);
-				print_array(array, high + 1);
-			}
+			t = array[i];
+			array[i] = array[c];
+			array[c] = t;
+
+			if (t != array[i])
+				print_array(array, size);
+			++i;
 		}
 	}
-	if ((i + 1) != high)
-	{
-		swap(&array[i + 1], &array[high]);
-		print_array(array, high + 1);
-	}
-	return (i + 1);
+	t = array[i];
+	array[i] = array[high];
+	array[high] = t;
+
+	if (t != array[i])
+		print_array(array, size);
+
+	return (i);
 }
 /**
  * quick_sort_- recursively sorts array
@@ -49,12 +52,14 @@ int lomuto_partition(int *array, int low, int high)
  * @low: starting
  * @high: ending
  */
-void quick_sort_r(int *array, int low, int high)
+void quick_sort_r(int *array, int low, int high, size_t size)
 {
+	int part;
+
 	if (low < high)
 	{
-		int partition_index = lomuto_partition(array, low, high);
-		quick_sort_r(array, low, partition_index - 1);
-		quick_sort_r(array, partition_index + 1, high);
+		part = lomuto_partition(array, low, high, size);
+		quick_sort_r(array, low, part - 1, size);
+		quick_sort_r(array, part + 1, high, size);
 	}
 }
