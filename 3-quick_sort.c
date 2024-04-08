@@ -2,7 +2,7 @@
 #include "lomus.c"
 /**
  * quick_sort- sorts
- * @array- pointer to array
+ * @array: pointer to array
  * @size: number of elements
  */
 void quick_sort(int *array, size_t size)
